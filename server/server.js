@@ -59,10 +59,10 @@ app.get('/:shortcut', async (req, res) => {
 
     var html = '';
     if (lookup == null) {
-        // TODO: Make this error message screen look better. (medium priority)
+        // TODO: Add error message pop up on main site. (medium priority)
         var host = req.headers.host;
-        html = "<head><meta charset=\"UTF-8\"> <title>Shortcut not Found</title>";
-        html += "<p>Your shortcut does not exist, create one at " + host + "</p>";
+        html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
+        html += "<script type=\"text/javascript\">window.location.href = \"http://" + host + "\"</script>";
         html += "</head>";
     } else {
         html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
