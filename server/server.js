@@ -27,11 +27,20 @@ linkSchema.virtual('shortcut').get(function() {
 
 const Lookup = mongoose.model('Lookup', linkSchema);
 
+// Saves a relation between a shortend url and full url.
 app.post('/upload', async (req, res) => {
   const lookup = new Lookup({
     _id: req.body.shortcut,
     link: req.body.link,
   });
+
+  // TODO: regix? (low priority)
+  // Check proper url syntax ??? Maybe it's best to assume
+  // they will enter the correct link.
+  var http = "http://";
+  var https = "https://";
+  lookup.link = lookup.link.replace(http, '');
+  lookup.link = lookup.link.replace(https, '');
 
   try {
     await lookup.save();
@@ -40,16 +49,28 @@ app.post('/upload', async (req, res) => {
     console.log(error);
     res.sendStatus(500);
   }
-  console.log(lookup);
 });
 
-// URL fowarding
+// Fowards tiny url to actual url.
 app.get('/:shortcut', async (req, res) => {
     const lookup = await Lookup.findOne({
       _id: req.params.shortcut
     });
-    console.log(lookup);
-    res.send(lookup);
+
+    var html = '';
+    if (lookup == null) {
+        // TODO: Make this error message screen look better. (medium priority)
+        var host = req.headers.host;
+        html = "<head><meta charset=\"UTF-8\"> <title>Shortcut not Found</title>";
+        html += "<p>Your shortcut does not exist, create one at " + host + "</p>";
+        html += "</head>";
+    } else {
+        html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
+        html += "<script type=\"text/javascript\">window.location.href = \"http://" + lookup.link + "\"</script>";
+        html += "</head>";
+    }
+
+    res.send(html);
 });
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));
