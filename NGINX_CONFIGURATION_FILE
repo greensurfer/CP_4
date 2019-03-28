@@ -1,3 +1,5 @@
+# Point everything to express, change app.use(express.static('../public')); to app.use(express.static('var/www/html'));
+# in server.js
 server {
   listen 80;
   server_name link.goog.press;
@@ -5,20 +7,6 @@ server {
   index index.html;
   default_type "text/html";
   location / {
-    # Serve static files from the root location above.
-    try_files $uri $uri/ /index.html;
-  }
-  location /upload {
-    # Serve api requests here. This will connect to your node
-    # process that is running on port 3001.
-    proxy_pass http://localhost:3001;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection 'upgrade';
-    proxy_set_header Host $host;
-    proxy_cache_bypass $http_upgrade;
-  }
-  location  ~ /(.+) {
     # Serve api requests here. This will connect to your node
     # process that is running on port 3001.
     proxy_pass http://localhost:3001;
