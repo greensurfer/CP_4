@@ -36,6 +36,10 @@ var app = new Vue({
       try {
         let response = await axios.get("/upload");
         this.lookups = response.data;
+	this.lookups.forEach(function(entry){
+		console.log(entry);
+		entry["id"] = entry._id;
+	});
         return true;
       } catch (error) {
         console.log(error);
@@ -47,9 +51,9 @@ var app = new Vue({
     },
     async editLookup(lookup) {
       try {
-        let response = await axios.put("/upload" + lookup._id, {
-          id: this.lookup.id,
-          link: this.lookup.link,
+        let response = await axios.put("/upload/" + lookup._id, {
+          id: lookup.id,
+          link: lookup.link,
         });
         this.findLookup = null;
         this.getLookups();
