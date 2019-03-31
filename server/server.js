@@ -88,11 +88,13 @@ app.get('/:shortcut', async (req, res) => {
 //edit lookup
 app.put('/upload/:id', async (req, res) => {
   let id = req.params.id;
+	console.log(id);
   try {
     let lookup = await Lookup.findOne({
       _id: id
     });
-    lookup._id = req.body._id;
+    console.log(lookup);
+    lookup._id = req.body.id;
     lookup.link = req.body.link;
     await lookup.save();
     res.send(lookup);
