@@ -23,10 +23,10 @@
 
       <div class="edit">
         <div class="form">
-          <div class="lookup" v-for="lookup in lookups" @click="selectLookup(lookup)">
+          <div class="lookup" v-for="lookup in lookups">
             <h2>Shortcut: {{lookup._id}}</h2>
             <h2>Actual Link: {{lookup.link}}</h2>
-            <div class="actions" v-if="findLookup">
+            <div class="actions">
               <input v-model="lookup.id">
               <br>
               <input v-model="lookup.link">
