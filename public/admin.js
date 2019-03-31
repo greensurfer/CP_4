@@ -47,8 +47,8 @@ var app = new Vue({
     async editLookup(lookup) {
       try {
         let response = await axios.put("/upload" + lookup._id, {
-          shortcut: this.findLookup.shortcut,
-          link: this.findLookup.link,
+          _id: this.lookup._id,
+          link: this.lookup.link,
         });
         this.findLookup = null;
         this.getLookups();

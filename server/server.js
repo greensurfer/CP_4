@@ -92,7 +92,7 @@ app.put('/upload/:id', async (req, res) => {
     let lookup = await Lookup.findOne({
       _id: id
     });
-    lookup.shortcut = req.body.shortcut;
+    lookup._id = req.body._id;
     lookup.link = req.body.link;
     await lookup.save();
     res.send(lookup);
