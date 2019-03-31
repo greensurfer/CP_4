@@ -54,8 +54,6 @@ app.post('/upload', async (req, res) => {
 app.get('/upload', async (req, res) => {
 	  try {
 		      let lookups = await Lookup.find();
-		      console.log(lookups);
-		      console.log('hi');
 		      res.send(lookups);
 		    } catch (error) {
 			        console.log(error);

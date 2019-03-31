@@ -14,7 +14,7 @@
       <p>Use ShortLinks to create shortend URL's to share...</p>
     </div>
     <div class="content">
-      <form @submit.prevent="getLookups">
+      <form @submit.prevent="addShortcut">
         <input v-model="shortcut" placeholder="Shortcut">
         <input v-model="link" placeholder="Full URL">
         <br />
@@ -23,13 +23,13 @@
 
       <div class="edit">
         <div class="form">
-          <div class="lookup" v-for="l in lookups" @click="selectLookup(l)">
-            <h2>Shortcut: {{l.shortcut}}</h2>
-            <h2>Actual Link: {{l.link}}</h2>
+          <div class="lookup" v-for="lookup in lookups" @click="selectLookup(l)">
+            <h2>Shortcut: {{lookup._id}}</h2>
+            <h2>Actual Link: {{lookup.link}}</h2>
             <div class="actions" v-if="findLookup">
-              <input v-model="l.link">
+              <input v-model="lookup._id">
               <br>
-              <input v-model="l.shortcut">
+              <input v-model="lookup.link">
               <br>
               <button @click="deleteLookup(l)">Delete</button>
               <button @click="editLookup(l)">Edit</button>
