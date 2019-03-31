@@ -22,7 +22,7 @@ const linkSchema = new mongoose.Schema({
 });
 
 linkSchema.virtual('shortcut').get(function() {
-    return this._id;
+  return this._id;
 });
 
 const Lookup = mongoose.model('Lookup', linkSchema);
@@ -53,24 +53,67 @@ app.post('/upload', async (req, res) => {
 
 // Fowards tiny url to actual url.
 app.get('/:shortcut', async (req, res) => {
-    const lookup = await Lookup.findOne({
-      _id: req.params.shortcut
+  const lookup = await Lookup.findOne({
+    _id: req.params.shortcut
+  });
+
+  var html = '';
+  if (lookup == null) {
+    // TODO: Add error message pop up on main site. (medium priority)
+    var host = req.headers.host;
+    html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
+    html += "<script type=\"text/javascript\">window.location.href = \"http://" + host + "\"</script>";
+    html += "</head>";
+  } else {
+    html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
+    html += "<script type=\"text/javascript\">window.location.href = \"http://" + lookup.link + "\"</script>";
+    html += "</head>";
+  }
+
+  res.send(html);
+});
+
+//gets all of the lookups that are in the database
+app.get('/upload', async (req, res) => {
+  try {
+    let lookups = await Lookup.find();
+    res.send(lookups);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+//edit lookup
+app.put('/upload/:id', async (req, res) => {
+  let id = req.params.id;
+  try {
+    let lookup = await Lookup.findOne({
+      _id: id
     });
+    lookup.shortcut = req.body.shortcut;
+    lookup.link = req.body.link;
+    await lookup.save();
+    res.send(lookup);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
 
-    var html = '';
-    if (lookup == null) {
-        // TODO: Add error message pop up on main site. (medium priority)
-        var host = req.headers.host;
-        html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
-        html += "<script type=\"text/javascript\">window.location.href = \"http://" + host + "\"</script>";
-        html += "</head>";
-    } else {
-        html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
-        html += "<script type=\"text/javascript\">window.location.href = \"http://" + lookup.link + "\"</script>";
-        html += "</head>";
-    }
+//deletes specific lookups
+app.delete('/upload/:id', async (req, res) => {
+  let id = req.params.id;
+  try {
+    await Lookup.deleteOne({
+      _id: id
+    });
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 
-    res.send(html);
 });
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+  <title>ShortLinks</title>
+</head>
+
+<body>
+  <div id="admin">
+    <div class="header">
+      <h1>ShortLinks</h1>
+      <p>Use ShortLinks to create shortend URL's to share...</p>
+    </div>
+    <div class="content">
+      <form @submit.prevent="addShortcut">
+        <input v-model="shortcut" placeholder="Shortcut">
+        <input v-model="link" placeholder="Full URL">
+        <br />
+        <button type="submit">Submit</button>
+      </form>
+
+      <div class="edit">
+        <div class="form">
+          <div class="lookup" v-if="lookup.length > 0">
+            <div class="lookup" v-for="lookup in lookups" @click="selectLookup(lookup)">
+              <h2>Shortcut: {{lookup.shortcut}}</h2>
+              <h2>Actual Link: {{lookup.link}}</h2>
+              <div class="actions" v-if="findLookup">
+                <input v-model="findLookup.link">
+                <br>
+                <input v-model="findLookup.shortcut">
+                <br>
+                <button @click="deleteLookup(findLookup)">Delete</button>
+                <button @click="editLookup(findLookup)">Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js" integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>
+    <script src="/script.js"></script>
+</body>
+
+</html>
