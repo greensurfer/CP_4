@@ -88,16 +88,27 @@ app.get('/:shortcut', async (req, res) => {
 //edit lookup
 app.put('/upload/:id', async (req, res) => {
   let id = req.params.id;
-	console.log(id);
   try {
     let lookup = await Lookup.findOne({
       _id: id
     });
+
     console.log(lookup);
-    lookup._id = req.body.id;
-    lookup.link = req.body.link;
-    await lookup.save();
-    res.send(lookup);
+
+    await Lookup.deleteOne({
+      _id: id
+    });
+
+    const lookup1 = new Lookup({
+      _id: req.body.id,
+      link: req.body.link,
+    });
+
+    console.log(lookup1);
+
+    await lookup1.save();
+    res.send(lookup1);
+
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
