@@ -51,11 +51,24 @@ app.post('/upload', async (req, res) => {
   }
 });
 
+app.get('/upload', async (req, res) => {
+	  try {
+		      let lookups = await Lookup.find();
+		      console.log(lookups);
+		      console.log('hi');
+		      res.send(lookups);
+		    } catch (error) {
+			        console.log(error);
+			        res.sendStatus(500);
+			      }
+});
+
 // Fowards tiny url to actual url.
 app.get('/:shortcut', async (req, res) => {
   const lookup = await Lookup.findOne({
     _id: req.params.shortcut
   });
+	console.log('hi');
 
   var html = '';
   if (lookup == null) {
@@ -73,16 +86,6 @@ app.get('/:shortcut', async (req, res) => {
   res.send(html);
 });
 
-//gets all of the lookups that are in the database
-app.get('/upload', async (req, res) => {
-  try {
-    let lookups = await Lookup.find();
-    res.send(lookups);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
 
 //edit lookup
 app.put('/upload/:id', async (req, res) => {
