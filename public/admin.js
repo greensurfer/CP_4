@@ -19,22 +19,18 @@ var app = new Vue({
     fileChanged(event) {
       this.file = event.target.files[0]
     },
-     async addShortcut() {
-	           try {
-			           let response = await axios.post("/upload", {
-					             shortcut: this.shortcut,
-					             link: this.link,
-					           });
-			           this.shortcut = "";
-			           this.link = "";
-
-			           // TODO: Show sucessfull, and display url. (High priority)
-			            // Like localhost:3000/apples
-			                    // Or   cp4.goog.press/apples
-			                          } catch (error) {
-			                                  console.log(error);
-			                                       }
-			                                           },
+    async addShortcut() {
+      try {
+        let response = await axios.post("/upload", {
+          shortcut: this.shortcut,
+          link: this.link,
+        });
+        this.shortcut = "";
+        this.link = "";
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async getLookups() {
       try {
         let response = await axios.get("/upload");

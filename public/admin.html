@@ -23,26 +23,26 @@
 
       <div class="edit">
         <div class="form">
-            <div class="lookup" v-for="lookup in lookups" @click="selectLookup(lookup)">
-              <h2>Shortcut: {{lookup.shortcut}}</h2>
-              <h2>Actual Link: {{lookup.link}}</h2>
-              <div class="actions" v-if="findLookup">
-                <input v-model="findLookup.link">
-                <br>
-                <input v-model="findLookup.shortcut">
-                <br>
-                <button @click="deleteLookup(findLookup)">Delete</button>
-                <button @click="editLookup(findLookup)">Edit</button>
-              </div>
+          <div class="lookup" v-for="lookup in lookups" @click="selectLookup(lookup)">
+            <h2>Shortcut: {{lookup.shortcut}}</h2>
+            <h2>Actual Link: {{lookup.link}}</h2>
+            <div class="actions" v-if="findLookup">
+              <input v-model="findLookup.link">
+              <br>
+              <input v-model="findLookup.shortcut">
+              <br>
+              <button @click="deleteLookup(findLookup)">Delete</button>
+              <button @click="editLookup(findLookup)">Edit</button>
             </div>
           </div>
         </div>
+      </div>
 
     </div>
   </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js" integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>
-	        <script src="/admin.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js" integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>
+  <script src="/admin.js"></script>
 
 </body>
 
