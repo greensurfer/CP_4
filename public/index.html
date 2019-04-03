@@ -14,9 +14,17 @@
                 <h1>ShortLinks</h1>
                 <p>Use ShortLinks to create shortend URL's to share...</p>
             </div>
-            <div id="account" title="Create an account for free!">
-                <label for="sign in">Sign In</label>
-                <button id="sign in" type="submit" v-on:click="login()"><img src="./user.png" /></button>
+            <div v-if="user===null">
+                <div id="account" title="Create an account for free!">
+                    <label for="sign in">Sign In</label>
+                    <button id="sign in" type="submit" v-on:click="showLogin()"><img src="./user.png" /></button>
+                </div>
+            </div>
+            <div v-else>
+                <div id="account" title="Sign Out!">
+                    <label for="sign out">{{user.username}}</label>
+                    <button id="sign out" type="submit" v-on:click="signout()"><img src="./user.png" /></button>
+                </div>
             </div>
         </div>
 
@@ -39,7 +47,7 @@
                                     <div v-if="registerationForm==false">
                                         <form id="colorForm" @submit.prevent="login">
                                             <div>
-                                                <input v-model="email" v-bind:class="{ hasText: hasEmail }" />
+                                                <input v-model="email" v-bind:class="{ hasText: hasEmail}" />
                                                 <label>Email or Username</label>
                                             </div>
                                             <div>
@@ -51,33 +59,33 @@
                                     </div>
                                     <!-- Registeration Form -->
                                     <div v-else>
-                                        <form id="colorForm" @submit.prevent="login">
+                                        <form id="colorForm" @submit.prevent="register">
                                             <div>
                                                 <input v-model="email" v-bind:class="{ hasText: hasEmail }" />
                                                 <label>Email</label>
                                             </div>
                                             <div>
                                                 <input v-model="username" v-bind:class="{ hasText: hasUsername }" />
-                                                <label>Username</label>
+                                                <label>Username (Optional)</label>
                                             </div>
                                             <div>
                                                 <input type="password" v-model="password" v-bind:class="{ hasText: hasPassword }" />
                                                 <label>Password</label>
                                             </div>
                                             <div>
-                                                <input type="password" v-model="password" v-bind:class="{ hasText: hasConfirmPassword }" />
+                                                <input type="password" v-model="confirmPassword" v-bind:class="{ hasText: hasConfirmPassword }" />
                                                 <label>Confirm Password</label>
                                             </div>
-                                    <button type="submit">Register</button>
-                                    </form>
+                                            <button type="submit">Register</button>
+                                        </form>
                                     </div>
                                 </center>
                             </div>
                             <div class="modal-footer" v-if="registerationForm==false">
-                                <p>Don't have an account?</p><button v-on:click="register()">Sign Up</button>
+                                <p>Don't have an account?</p><button v-on:click="showRegister()">Sign Up</button>
                             </div>
                             <div class="modal-footer" v-else>
-                                <p>Back to login page?</p><button v-on:click="login()">Log In</button>
+                                <p>Login instead?</p><button v-on:click="showLogin()">Log In</button>
                             </div>
                         </div>
                     </div>
@@ -98,7 +106,9 @@
                         <label>Link</label>
                     </div>
                     <button type="submit">Create</button>
-                    <p>Shortcuts expire after 7 days, for a permament link create a free account!</p>
+                    <div v-if="user===null">
+                        <p>Shortcuts expire after 7 days, for a permament link create a free account!</p>
+                    </div>
                 </form>
             </div>
         </div>

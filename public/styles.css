@@ -102,6 +102,12 @@ html {
     z-index: 3;
 }
 
+#colorForm input.hasError~label {
+    transform: scale(0.75) translateY(-34px);
+    left: -8px;
+    z-index: 3;
+}
+
 #colorForm input:focus~label {
     color: rgb(76, 153, 0);
 }
