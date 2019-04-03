@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/styles.css" />
     <title>ShortLinks</title>
 </head>
+
 <body>
     <div id="app">
         <div class="header">
@@ -14,38 +15,93 @@
                 <p>Use ShortLinks to create shortend URL's to share...</p>
             </div>
             <div id="account" title="Create an account for free!">
-                <label for="sign in">Sign In or Sign Up</label>
+                <label for="sign in">Sign In</label>
                 <button id="sign in" type="submit" v-on:click="login()"><img src="./user.png" /></button>
             </div>
         </div>
-    </div>
-    <div class="content">
-        <form id="colorForm" @submit.prevent="addShortcut">
-            <p>Create a Shortcut</p>
-            <div>
-                <input v-model="shortcut" v-bind:class="{ hasText: hasShortcut }" />
-                <label>Shortcut</label>
-            </div>
-            <div>
-                <input v-model="link" v-bind:class="{ hasText: hasLink }" />
-                <label>Link</label>
-            </div>
-            <button type="submit">Create</button>
-            <p>Shortcuts expire after 7 days, for a permament link create a free account!</p>
-        </form>
-        <!-- <form id="colorForm" @submit.prevent="login">
-                <p>Login</p>
-                <div>
-                    <input v-model="email" v-bind:class="{ hasText: hasEmail }" />
-                    <label>Email</label>
+
+        <!-- Logging in and Registeration -->
+        <transition v-if="showForm" name="modal">
+            <div class="modal-mask">
+                <div class="modal-wrapper">
+                    <div class="modal-border">
+                        <button id="close" type="submit" v-on:click="close()"><img src="./exit.png" /></button>
+                        <div class="modal-container">
+                            <div class="modal-header" v-if="registerationForm==false">
+                                <h1 class="modal-title">Sign In</h1>
+                            </div>
+                            <div class="modal-header" v-else>
+                                <h1 class="modal-title">Sign Up</h1>
+                            </div>
+                            <div class="modal-body">
+                                <center>
+                                    <!-- Login form -->
+                                    <div v-if="registerationForm==false">
+                                        <form id="colorForm" @submit.prevent="login">
+                                            <div>
+                                                <input v-model="email" v-bind:class="{ hasText: hasEmail }" />
+                                                <label>Email or Username</label>
+                                            </div>
+                                            <div>
+                                                <input type="password" v-model="password" v-bind:class="{ hasText: hasPassword }" />
+                                                <label>Password</label>
+                                            </div>
+                                            <button type="submit">Login</button>
+                                        </form>
+                                    </div>
+                                    <!-- Registeration Form -->
+                                    <div v-else>
+                                        <form id="colorForm" @submit.prevent="login">
+                                            <div>
+                                                <input v-model="email" v-bind:class="{ hasText: hasEmail }" />
+                                                <label>Email</label>
+                                            </div>
+                                            <div>
+                                                <input v-model="username" v-bind:class="{ hasText: hasUsername }" />
+                                                <label>Username</label>
+                                            </div>
+                                            <div>
+                                                <input type="password" v-model="password" v-bind:class="{ hasText: hasPassword }" />
+                                                <label>Password</label>
+                                            </div>
+                                            <div>
+                                                <input type="password" v-model="password" v-bind:class="{ hasText: hasConfirmPassword }" />
+                                                <label>Confirm Password</label>
+                                            </div>
+                                    <button type="submit">Register</button>
+                                    </form>
+                                    </div>
+                                </center>
+                            </div>
+                            <div class="modal-footer" v-if="registerationForm==false">
+                                <p>Don't have an account?</p><button v-on:click="register()">Sign Up</button>
+                            </div>
+                            <div class="modal-footer" v-else>
+                                <p>Back to login page?</p><button v-on:click="login()">Log In</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <input type="password" v-model="password" v-bind:class="{ hasText: hasPassword }" />
-                    <label>Password</label>
-                </div>
-                <button type="submit">Login</button> -->
-        </form>
-    </div>
+            </div>
+        </transition>
+
+        <div class="content">
+            <div id="wrapper">
+                <form id="colorForm" @submit.prevent="addShortcut">
+                    <p>Create a Shortcut</p>
+                    <div>
+                        <input v-model="shortcut" v-bind:class="{ hasText: hasShortcut }" />
+                        <label>Shortcut</label>
+                    </div>
+                    <div>
+                        <input v-model="link" v-bind:class="{ hasText: hasLink }" />
+                        <label>Link</label>
+                    </div>
+                    <button type="submit">Create</button>
+                    <p>Shortcuts expire after 7 days, for a permament link create a free account!</p>
+                </form>
+            </div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js" integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>

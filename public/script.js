@@ -3,6 +3,12 @@ var app = new Vue({
   data: {
     shortcut: '',
     link: '',
+    showForm: false,
+    registerationForm: false,
+    email: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
   },
   computed: {
     hasShortcut() {
@@ -10,6 +16,18 @@ var app = new Vue({
     },
     hasLink() {
       return this.link.trim().length !== 0;
+    },
+    hasEmail() {
+      return this.email.trim().length !== 0;
+    },
+    hasUsername() {
+      return this.username.trim().length !== 0;
+    },
+    hasPassword() {
+      return this.password.trim().length !== 0;
+    },
+    hasConfirmPassword() {
+      return this.confirmPassword.trim().length !== 0;
     },
   },
   methods: {
@@ -38,8 +56,16 @@ var app = new Vue({
         console.log(error);
       }
     },
-    login(){
-        alert("Clicked");
+    login() {
+        this.registerationForm=false;
+        this.showForm=true;
+    },
+    close() {
+        this.showForm=false;
+        this.registerationForm=false;
+    },
+    register() {
+        this.registerationForm=true;
     },
   }
 });
