@@ -119,7 +119,7 @@
 
         <!-- Inputs -->
         <div class="content">
-            <div id="wrapper">
+            <div id="wrapperLeft">
                 <form id="inputForm" @submit.prevent="addShortcut">
                     <p>Create a Shortcut</p>
                     <div>
@@ -135,6 +135,10 @@
                         <p>Shortcuts expire after 7 days, for a permament link create a free account!</p>
                     </div>
                 </form>
+            </div>
+            <div id="wrapperRight" v-if="shortcutCreated">
+                <p>Shortcut Created</p>
+                <a v-bind:href="created">{{showLink}}</a>
             </div>
         </div>
     </div>

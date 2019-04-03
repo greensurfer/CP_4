@@ -6,6 +6,8 @@ var app = new Vue({
         showForm: false,
         registerationForm: false,
         showSignoutForm: false,
+        created: '',
+        showLink: '',
         email: '',
         username: '',
         password: '',
@@ -34,16 +36,11 @@ var app = new Vue({
         hasConfirmPassword() {
             return this.confirmPassword.trim().length !== 0;
         },
+        shortcutCreated() {
+            return this.created.trim().length !== 0;
+        },
     },
     methods: {
-        toggleForm() {
-            this.email = '';
-            this.username = '';
-            this.password = '';
-            this.confirmPassword = '';
-            this.showForm = false;
-            this.registerationForm = false;
-        },
         async register() {
             if (this.email === '' || this.password === '' || this.confirmPassword === '') {
                 alert("Be sure the email, password, and confirm password fields are filled in.");
@@ -107,12 +104,13 @@ var app = new Vue({
                     shortcut: this.shortcut,
                     link: this.link,
                 });
+
+                this.showLink = window.location.hostname + '/' + this.shortcut;
+                this.created = 'http://' + this.created;
+
                 this.shortcut = "";
                 this.link = "";
 
-                // TODO: Show sucessfull, and display url. (High priority)
-                // Like localhost:3000/apples
-                // Or   cp4.goog.press/apples
             } catch (error) {
                 console.log(error);
             }

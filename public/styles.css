@@ -45,9 +45,20 @@ html {
     max-height: 50px;
 }
 
-#wrapper {
+.content {
+    position: absolute;
+}
+
+#wrapperLeft {
+    float:left;
     max-width: 500px;
     padding-left: 25px;
+}
+
+#wrapperRight {
+    float: right;
+    max-width: 500px;
+    margin-left: 50px;
 }
 
 #inputForm label {
