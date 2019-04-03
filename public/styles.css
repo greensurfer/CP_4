@@ -1,170 +1,132 @@
-body {
-  font-family: 'Arimo', sans-serif;
-  font-size: 16px;
-  margin: 0px;
-  background: #fff;
+html {
+    font: 400 16px 'PT Sans', sans-serif;
 }
 
-/* Header */
 .header {
-  justify-content: space-between;
-  background: #5271B2;
-  padding: 10px 100px;
-  color: white;
+    justify-content: space-between;
+    vertical-align: top;
+    background-image: linear-gradient(to bottom right, rgb(76, 153, 0), rgb(154, 205, 50));
+    border-radius: 4px;
+    padding: 10px 100px;
+    color: white;
+    display: flex;
 }
 
 .header a {
-  color: white;
+    color: white;
 }
 
-/* Content */
-.content {
-  padding: 20px 100px 0px 100px;
+.header h1 {
+    margin: 10px;
 }
 
-/* Login Form */
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .5);
-  display: table;
-  transition: opacity .3s ease;
+.header p {
+    margin: 10px;
 }
 
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
+#account {
+    display: flex;
+align-items: center;
+justify-content: center;
 }
 
-.modal-container {
-  width: 500px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-  transition: all .3s ease;
-  font-family: Helvetica, Arial, sans-serif;
+.header label {
+    margin-right: 1px;
+    text-align:center;
 }
 
-.modal-header h1 {
-  margin-bottom: 30px;
-  font-size: 1.5em;
+.header button {
+    background-color: Transparent;
+    border: none;
 }
 
-.modal-body {
-  margin: 0;
+.header img {
+    max-width: 50px;
+    max-height: 50px;
 }
 
-.modal-body input {
-  margin-bottom: 20px;
-  height: 30px;
+#colorForm {
+    max-width: 500px;
+    padding-left: 25px;
 }
 
-.modal-footer {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
+#colorForm label {
+    display: inline-block;
+    transition: all 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1), cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: transform color left;
+    background-color: white;
+    font-size: 16px;
+    color: #80868b;
+    padding: 0 8px;
+    bottom: 12px;
+    left: 8px;
+    position: absolute;
+    z-index: 1;
 }
 
-.modal-default-button {
-  float: right;
+#colorForm>div {
+    position: relative;
 }
 
-/*
-  * The following styles are auto-applied to elements with
-  * transition="modal" when their visibility is toggled
-  * by Vue.js.
-  *
-  * You can easily play with the modal transition by editing
-  * these styles.
-  */
-.modal-enter {
-  opacity: 0;
+#colorForm input {
+    box-flex: 1;
+    flex-shrink: 1;
+    background-color: transparent;
+    border: none;
+    display: block;
+    height: 48px;
+    padding: 13px 15px;
+    line-height: 24px;
+    margin: 0;
+    min-width: 0%;
+    outline: none;
+    z-index: 0;
+    border-radius: 4px;
+    border: 1px solid #80868b;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin: 16px 0;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    transition: all 250ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1), cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: border-color;
 }
 
-.modal-leave-active {
-  opacity: 0;
+#colorForm input:focus~label,
+#colorForm input.hasText~label {
+    transform: scale(0.75) translateY(-34px);
+    left: -8px;
+    z-index: 3;
 }
 
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+#colorForm input:focus~label {
+    color: rgb(76, 153, 0);
 }
 
-/* Ticket Form */
-textarea {
-  width: 100%;
-  max-width: 500px;
-  height: 100px;
+#colorForm input:focus {
+    color: black;
+    border-color: rgb(76, 153, 0);
+    border-width: 2px;
+    padding-left: 14px;
 }
 
-/* Ticket */
-.ticket {
-  display: flex;
+#colorForm button {
+    width: 100%;
+    height: 48px;
+    color: white;
+    background-color: rgb(76, 153, 0);
+    /* Original Blue -> rgb(25, 115, 232); */
+    border: 1px solid rgb(76, 153, 0);
+    border-radius: 4px;
+    transition: all 250ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1), cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: background-color;
+    cursor: pointer;
 }
 
-.problem {
-  flex: 5;
-}
-
-.delete {
-  flex: 1;
-}
-
-/* General */
-.error {
-  color: #B2261C;
-}
-
-input, textarea, select, button {
-  font-family: 'Arimo', sans-serif;
-  font-size: 1em;
-}
-
-button {
-  border: none;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  padding: 15px 32px;
-}
-
-button {
-  background-color: #EE9828;
-  color: white;
-}
-
-button:hover {
-  background-color: #C47D21;
-  color: white;
-}
-
-button.other {
-  background-color: #5271B2;
-  color: white;
-}
-
-button.other:hover {
-  background-color: #4261A2;
-  color: white;
-}
-
-button.close {
-  background-color: #aaa;
-  color: white;
-}
-
-button.close:hover {
-  background-color: #888;
-  color: white;
-}
-
-.lookup{
-	background-color: #5271B2;
+#colorForm button:hover {
+    background-color: rgb(51, 102, 0);
 }

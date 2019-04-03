@@ -2,33 +2,54 @@
 <html>
 
 <head>
-  <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css" />
-  <title>ShortLinks</title>
+    <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css" />
+    <title>ShortLinks</title>
 </head>
-
 <body>
-  <div id="app">
-    <div class="header">
-      <h1>ShortLinks</h1>
-      <p>Use ShortLinks to create shortend URL's to share...</p>
+    <div id="app">
+        <div class="header">
+            <div>
+                <h1>ShortLinks</h1>
+                <p>Use ShortLinks to create shortend URL's to share...</p>
+            </div>
+            <div id="account" title="Create an account for free!">
+                <label for="sign in">Sign In or Sign Up</label>
+                <button id="sign in" type="submit" v-on:click="login()"><img src="./user.png" /></button>
+            </div>
+        </div>
     </div>
     <div class="content">
-      <form @submit.prevent="addShortcut">
-        <input v-model="shortcut" placeholder="Shortcut">
-        <input v-model="link" placeholder="Full URL">
-        <br />
-        <button type="submit">Submit</button>
-      </form>
+        <form id="colorForm" @submit.prevent="addShortcut">
+            <p>Create a Shortcut</p>
+            <div>
+                <input v-model="shortcut" v-bind:class="{ hasText: hasShortcut }" />
+                <label>Shortcut</label>
+            </div>
+            <div>
+                <input v-model="link" v-bind:class="{ hasText: hasLink }" />
+                <label>Link</label>
+            </div>
+            <button type="submit">Create</button>
+            <p>Shortcuts expire after 7 days, for a permament link create a free account!</p>
+        </form>
+        <!-- <form id="colorForm" @submit.prevent="login">
+                <p>Login</p>
+                <div>
+                    <input v-model="email" v-bind:class="{ hasText: hasEmail }" />
+                    <label>Email</label>
+                </div>
+                <div>
+                    <input type="password" v-model="password" v-bind:class="{ hasText: hasPassword }" />
+                    <label>Password</label>
+                </div>
+                <button type="submit">Login</button> -->
+        </form>
     </div>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js" integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>
-  <script src="/script.js"></script>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js" integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>
+    <script src="/script.js"></script>
 </body>
-
-<div class="footer">
-  <a href="/admin.html">Admin</a>
-</div>
 
 </html>

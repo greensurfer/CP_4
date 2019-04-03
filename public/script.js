@@ -4,6 +4,14 @@ var app = new Vue({
     shortcut: '',
     link: '',
   },
+  computed: {
+    hasShortcut() {
+      return this.shortcut.trim().length !== 0;
+    },
+    hasLink() {
+      return this.link.trim().length !== 0;
+    },
+  },
   methods: {
     async addShortcut() {
       try {
@@ -29,6 +37,9 @@ var app = new Vue({
       } catch (error) {
         console.log(error);
       }
+    },
+    login(){
+        alert("Clicked");
     },
   }
 });
