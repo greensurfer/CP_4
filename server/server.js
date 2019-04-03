@@ -11,6 +11,9 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static('../public'));
 
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 // Database...
 mongoose.connect('mongodb://localhost:27017/CP_4', {
   useNewUrlParser: true
@@ -61,30 +64,6 @@ app.get('/upload', async (req, res) => {
 			      }
 });
 
-// Fowards tiny url to actual url.
-app.get('/:shortcut', async (req, res) => {
-  const lookup = await Lookup.findOne({
-    _id: req.params.shortcut
-  });
-	console.log('hi');
-
-  var html = '';
-  if (lookup == null) {
-    // TODO: Add error message pop up on main site. (medium priority)
-    var host = req.headers.host;
-    html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
-    html += "<script type=\"text/javascript\">window.location.href = \"http://" + host + "\"</script>";
-    html += "</head>";
-  } else {
-    html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
-    html += "<script type=\"text/javascript\">window.location.href = \"http://" + lookup.link + "\"</script>";
-    html += "</head>";
-  }
-
-  res.send(html);
-});
-
-
 //edit lookup
 app.put('/upload/:id', async (req, res) => {
   let id = req.params.id;
@@ -128,6 +107,34 @@ app.delete('/upload/:id', async (req, res) => {
     res.sendStatus(500);
   }
 
+});
+
+const users = require("./users.js");
+app.use("/api/users", users);
+
+// Fowards tiny url to actual url.
+app.get('/:shortcut', async (req, res) => {
+  const lookup = await Lookup.findOne({
+    _id: req.params.shortcut
+  });
+	console.log('hi');
+
+  var html = '';
+  if (lookup == null) {
+    // TODO: Add error message pop up on main site. (medium priority)
+    var host = req.headers.host;
+    html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
+    html += "<script type=\"text/javascript\">window.location.href = \"http://" + host + "\"</script>";
+    html += "<noscript>ShortLinks requires Javascript to run, Please turn Javascript.</noscript>"
+    html += "</head>";
+  } else {
+    html = "<head><meta charset=\"UTF-8\"> <title>Redirect</title>";
+    html += "<script type=\"text/javascript\">window.location.href = \"http://" + lookup.link + "\"</script>";
+    html += "<noscript>ShortLinks requires Javascript to run, Please turn Javascript.</noscript>"
+    html += "</head>";
+  }
+
+  res.send(html);
 });
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));

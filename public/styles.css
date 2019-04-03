@@ -50,7 +50,7 @@ html {
     padding-left: 25px;
 }
 
-#colorForm label {
+#inputForm label {
     display: inline-block;
     transition: all 150ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1), cubic-bezier(0.4, 0, 0.2, 1);
@@ -65,11 +65,11 @@ html {
     z-index: 1;
 }
 
-#colorForm>div {
+#inputForm>div {
     position: relative;
 }
 
-#colorForm input {
+#inputForm input {
     box-flex: 1;
     flex-shrink: 1;
     background-color: transparent;
@@ -95,31 +95,31 @@ html {
     transition-property: border-color;
 }
 
-#colorForm input:focus~label,
-#colorForm input.hasText~label {
+#inputForm input:focus~label,
+#inputForm input.hasText~label {
     transform: scale(0.75) translateY(-34px);
     left: -8px;
     z-index: 3;
 }
 
-#colorForm input.hasError~label {
+#inputForm input.hasError~label {
     transform: scale(0.75) translateY(-34px);
     left: -8px;
     z-index: 3;
 }
 
-#colorForm input:focus~label {
+#inputForm input:focus~label {
     color: rgb(76, 153, 0);
 }
 
-#colorForm input:focus {
+#inputForm input:focus {
     color: black;
     border-color: rgb(76, 153, 0);
     border-width: 2px;
     padding-left: 14px;
 }
 
-#colorForm button {
+#inputForm button {
     width: 100%;
     height: 48px;
     color: white;
@@ -132,7 +132,7 @@ html {
     cursor: pointer;
 }
 
-#colorForm button:hover {
+#inputForm button:hover {
     background-color: rgb(51, 102, 0);
 }
 
@@ -214,11 +214,6 @@ html {
     background-color: Transparent;
     border: none;
 }
-
-/* #close:hover {
-    background-color: #a8a8a8;
-    border-radius: 50%;
-} */
 
 .modal-border img {
     padding: 5px;

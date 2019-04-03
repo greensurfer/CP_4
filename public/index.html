@@ -9,6 +9,8 @@
 
 <body>
     <div id="app">
+
+        <!-- Banner -->
         <div class="header">
             <div>
                 <h1>ShortLinks</h1>
@@ -23,10 +25,32 @@
             <div v-else>
                 <div id="account" title="Sign Out!">
                     <label for="sign out">{{user.username}}</label>
-                    <button id="sign out" type="submit" v-on:click="signout()"><img src="./user.png" /></button>
+                    <button id="sign out" type="submit" v-on:click="showSignout()"><img src="./user.png" /></button>
                 </div>
             </div>
         </div>
+
+        <!-- Logging out -->
+        <transition v-if="showSignoutForm" name="modal">
+            <div class="modal-mask">
+                <div class="modal-wrapper">
+                    <div class="modal-border">
+                        <button id="close" type="submit" v-on:click="close()"><img src="./exit.png" /></button>
+                        <div class="modal-container">
+                            <div class="modal-header">
+                                <h1 class="modal-title">Sign out</h1>
+                            </div>
+                            <div class="modal-body">
+                                <center>
+                                    <form id="inputForm" @submit.prevent="signout">
+                                        <button type="submit">Sign Out</button>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
 
         <!-- Logging in and Registeration -->
         <transition v-if="showForm" name="modal">
@@ -45,7 +69,7 @@
                                 <center>
                                     <!-- Login form -->
                                     <div v-if="registerationForm==false">
-                                        <form id="colorForm" @submit.prevent="login">
+                                        <form id="inputForm" @submit.prevent="login">
                                             <div>
                                                 <input v-model="email" v-bind:class="{ hasText: hasEmail}" />
                                                 <label>Email or Username</label>
@@ -59,7 +83,7 @@
                                     </div>
                                     <!-- Registeration Form -->
                                     <div v-else>
-                                        <form id="colorForm" @submit.prevent="register">
+                                        <form id="inputForm" @submit.prevent="register">
                                             <div>
                                                 <input v-model="email" v-bind:class="{ hasText: hasEmail }" />
                                                 <label>Email</label>
@@ -93,16 +117,17 @@
             </div>
         </transition>
 
+        <!-- Inputs -->
         <div class="content">
             <div id="wrapper">
-                <form id="colorForm" @submit.prevent="addShortcut">
+                <form id="inputForm" @submit.prevent="addShortcut">
                     <p>Create a Shortcut</p>
                     <div>
-                        <input v-model="shortcut" v-bind:class="{ hasText: hasShortcut }" />
+                        <input title="Shortcut for a website." v-model="shortcut" v-bind:class="{ hasText: hasShortcut }" />
                         <label>Shortcut</label>
                     </div>
                     <div>
-                        <input v-model="link" v-bind:class="{ hasText: hasLink }" />
+                        <input title="Paste a url for the webpage your shortcut links to." v-model="link" v-bind:class="{ hasText: hasLink }" />
                         <label>Link</label>
                     </div>
                     <button type="submit">Create</button>
