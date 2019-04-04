@@ -117,7 +117,6 @@ app.get('/:shortcut', async (req, res) => {
   const lookup = await Lookup.findOne({
     _id: req.params.shortcut
   });
-	console.log('hi');
 
   var html = '';
   if (lookup == null) {
