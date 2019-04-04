@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     username: String,
     password: String,
     tokens: [],
+    shortcuts: [],
 });
 
 /*
@@ -63,6 +64,14 @@ userSchema.methods.removeToken = function(token) {
 
 userSchema.methods.removeOldTokens = function() {
     this.tokens = auth.removeOldTokens(this.tokens);
+}
+
+userSchema.methods.addShortcut = function(shortcut) {
+    this.shortcuts.push(shortcut);
+}
+
+userSchema.methods.removeShortcut = function(shortcut) {
+    this.shortcuts = this.shortcuts.filter(t => t != shortcut);
 }
 
 async function login(user, res) {

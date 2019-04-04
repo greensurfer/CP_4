@@ -13,7 +13,7 @@ var app = new Vue({
         password: '',
         confirmPassword: '',
         user: null,
-        userShortcuts: [{shortcut: "abc", link: "www.google.com"}, {shortcut: "123", link: "www.apple.com"}, {shortcut: "apples", link: "www.netflix.com"}],
+        userShortcuts: null, // [{shortcut: "abc", link: "www.google.com"}, {shortcut: "123", link: "www.apple.com"}, {shortcut: "apples", link: "www.netflix.com"}],
     },
     created() {
         this.getUser();
@@ -82,6 +82,8 @@ var app = new Vue({
                 this.close();
             } catch (error) {
                 this.error = error.response.data.message;
+                // TODO: Make nicer.
+                alert("Error Logging In");
             }
         },
         async signout() {
@@ -117,13 +119,13 @@ var app = new Vue({
 
             } catch (error) {
                 console.log(error);
+                alert("Error creating shortcut!");
             }
         },
-
-        // TODO: Maybe implement delete, maybe not. We would need like an admin page.
         async deleteShortcut(shortcut) {
             try {
-                let response = axios.delete("/upload" + shortcut);
+                let response = axios.delete("/upload/" + shortcut);
+                this.getUser();
             } catch (error) {
                 console.log(error);
             }

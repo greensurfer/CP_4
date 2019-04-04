@@ -147,6 +147,7 @@ html {
     background-color: rgb(51, 102, 0);
 }
 
+/* List of user shortcuts (shown when logged in) */
 #items_container {
     padding-top: 45px;
 }
@@ -166,10 +167,6 @@ html {
 
 #item_box p {
     padding-left: 10px;
-}
-
-#item_box div {
-    float: left;
 }
 
 #item_box button {
