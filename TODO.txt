@@ -1,0 +1,7 @@
+1. Error handling for invalid login credentials, username, email already on server.
+   shortcut already used, etc.
+
+ 2. When a user logs in, display all their urls in list format on right side, with
+ option to delete their old shortcuts.
+
+ 3. Delete unlogged in shortcuts after 7 days.

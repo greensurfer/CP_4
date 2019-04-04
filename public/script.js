@@ -106,7 +106,7 @@ var app = new Vue({
                 });
 
                 this.showLink = window.location.hostname + '/' + this.shortcut;
-                this.created = 'http://' + this.created;
+                this.created = 'http://' + this.showLink;
 
                 this.shortcut = "";
                 this.link = "";
