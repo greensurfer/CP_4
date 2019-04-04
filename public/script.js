@@ -13,6 +13,7 @@ var app = new Vue({
         password: '',
         confirmPassword: '',
         user: null,
+        userShortcuts: [{shortcut: "abc", link: "www.google.com"}, {shortcut: "123", link: "www.apple.com"}, {shortcut: "apples", link: "www.netflix.com"}],
     },
     created() {
         this.getUser();
@@ -38,6 +39,9 @@ var app = new Vue({
         },
         shortcutCreated() {
             return this.created.trim().length !== 0;
+        },
+        getHost() {
+            return window.location.hostname + '/';
         },
     },
     methods: {
@@ -117,9 +121,9 @@ var app = new Vue({
         },
 
         // TODO: Maybe implement delete, maybe not. We would need like an admin page.
-        async deleteShortcut(ticket) {
+        async deleteShortcut(shortcut) {
             try {
-                let response = axios.delete("/upload" + this.shortcut);
+                let response = axios.delete("/upload" + shortcut);
             } catch (error) {
                 console.log(error);
             }

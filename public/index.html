@@ -136,9 +136,20 @@
                     </div>
                 </form>
             </div>
-            <div id="wrapperRight" v-if="shortcutCreated">
-                <p>Shortcut Created</p>
-                <a v-bind:href="created">{{showLink}}</a>
+            <div id="wrapperRight" v-if="user!==null">
+                <div v-if="shortcutCreated">
+                    <p>Shortcut Created</p>
+                    <a v-bind:href="created">{{showLink}}</a>
+                </div>
+                <div id="items_container">
+                    <div id="item_box" v-for="item in userShortcuts">
+                        <div>
+                        <p>Shortcut: {{getHost}}{{item.shortcut}}</p>
+                        <p>Link: {{item.link}}</p>
+                        </div>
+                        <button title="Delete Shortcut" type="submit" v-on:click="deleteShortcu(item.shortcut)"><img src="./exit.png" /></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

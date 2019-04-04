@@ -51,7 +51,7 @@ html {
 
 #wrapperLeft {
     float:left;
-    max-width: 500px;
+    width: 500px;
     padding-left: 25px;
 }
 
@@ -145,6 +145,50 @@ html {
 
 #inputForm button:hover {
     background-color: rgb(51, 102, 0);
+}
+
+#items_container {
+    padding-top: 45px;
+}
+
+#item_box {
+    margin: 5px;
+    min-width: 500px;
+    border-radius: 4px;
+    border: 1px solid #80868b;
+    display: flex;
+}
+
+#item_box:hover, #item_box:focus {
+    border-color: rgb(76, 153, 0);
+    border-width: 2px;
+}
+
+#item_box p {
+    padding-left: 10px;
+}
+
+#item_box div {
+    float: left;
+}
+
+#item_box button {
+    float: right;
+    background-color: Transparent;
+    border: none;
+    position: absolute;
+    margin-top: 30px;
+    right: 10px;
+}
+
+#item_box img {
+    max-width: 25px;
+    max-height: 25px;
+}
+
+#item_box button:hover {
+    background-color: #D3D3D3;
+    border-radius: 4px;
 }
 
 /* Login Form */
