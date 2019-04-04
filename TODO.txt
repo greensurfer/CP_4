@@ -5,3 +5,5 @@
  option to delete their old shortcuts.
 
  3. Delete unlogged in shortcuts after 7 days.
+ 
+ 4. Fix bug with screen resize when logged in.
