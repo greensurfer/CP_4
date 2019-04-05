@@ -121,7 +121,8 @@
         <div class="content">
             <div id="wrapperLeft">
                 <form id="inputForm" @submit.prevent="addShortcut">
-                    <p>Create a Shortcut</p>
+                    <p v-if='update'>Edit a Shortcut</p>
+                    <p v-else>Create a Shortcut</p>
                     <div>
                         <input title="Shortcut for a website." v-model="shortcut" v-bind:class="{ hasText: hasShortcut }" />
                         <label>Shortcut</label>
@@ -130,19 +131,20 @@
                         <input title="Paste a url for the webpage your shortcut links to." v-model="link" v-bind:class="{ hasText: hasLink }" />
                         <label>Link</label>
                     </div>
-                    <button type="submit">Create</button>
+                    <button type="submit">{{buttonLabel}}</button>
+                    <button id="cancel" type="reset" v-if="update" v-on:click="cancel()">Cancel</button>
                     <div v-if="user===null">
                         <p>Shortcuts expire after 7 days, for a permament link create a free account!</p>
                     </div>
                 </form>
             </div>
-            <div id="wrapperRight" v-if="user!==null">
+            <div id="wrapperRight">
                 <div id="items_container">
-                    <div id="item_box" v-for="item in userShortcuts">
+                    <div class="item_box" v-for="item in userShortcuts" v-on:click="selected(item)">
                         <div>
-                        <p>Your Shortcut is:</p>
-                        <a v-bind:href="getLink(item.shortcut)">{{getShowLink(item.shortcut)}}</a>
-                        <p>Which links to: {{item.link}}</p>
+                            <p>Your Shortcut is:</p>
+                            <a v-bind:href="getLink(item.shortcut)">{{getShowLink(item.shortcut)}}</a>
+                            <p>Which links to: {{item.link}}</p>
                         </div>
                         <button title="Delete Shortcut" type="submit" v-on:click="deleteShortcut(item.shortcut)"><img src="./exit.png" /></button>
                     </div>

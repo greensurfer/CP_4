@@ -2,10 +2,13 @@ var app = new Vue({
     el: '#app',
     data: {
         shortcut: '',
+        oldlink: '',
         link: '',
         showForm: false,
         registerationForm: false,
         showSignoutForm: false,
+        buttonLabel: 'Create',
+        update: false,
         email: '',
         username: '',
         password: '',
@@ -78,6 +81,20 @@ var app = new Vue({
                 alert("Error Logging In");
             }
         },
+        async updateItem() {
+            this.error = "";
+            try {
+                let response = await axios.put("/api/users/upload/" + this.oldlink, {
+                    shortcut: this.shortcut,
+                    link: this.link,
+                });
+                this.getUser();
+            } catch (error) {
+                this.error = error.response.data.message;
+                // TODO: Make nicer.
+                alert("Key already Exists! Try a different Key!");
+            }
+        },
         async signout() {
             try {
                 let response = await axios.delete("/api/users");
@@ -93,38 +110,41 @@ var app = new Vue({
                 let response = await axios.get("/api/users");
                 this.user = response.data;
                 this.userShortcuts = this.user.shortcuts.reverse();
-                console.log(this.userShortcuts);
             } catch (error) {
                 // Not logged in. That's OK!
             }
         },
         async addShortcut() {
-            try {
-                if (this.user === null) {
-                    // Not logged in API.
-                    let response = await axios.post("/upload", {
-                        shortcut: this.shortcut,
-                        link: this.link,
-                    });
-                } else {
-                    // Logged in API.
-                    let response = await axios.post("/api/users/upload", {
-                        shortcut: this.shortcut,
-                        link: this.link,
-                    });
+            if (this.update) {
+                this.updateItem();
+                return;
+            } else {
+                try {
+                    if (this.user === null) {
+                        // Not logged in API.
+                        let response = await axios.post("/upload", {
+                            shortcut: this.shortcut,
+                            link: this.link,
+                        });
+                    } else {
+                        // Logged in API.
+                        let response = await axios.post("/api/users/upload", {
+                            shortcut: this.shortcut,
+                            link: this.link,
+                        });
+                    }
+
+                    this.shortcut = "";
+                    this.link = "";
+
+                    this.getUser();
+                } catch (error) {
+                    console.log(error);
+                    alert("Error creating shortcut!");
                 }
-
-                this.shortcut = "";
-                this.link = "";
-
-                this.getUser();
-            } catch (error) {
-                console.log(error);
-                alert("Error creating shortcut!");
             }
         },
         async deleteShortcut(shorty) {
-            console.log(shorty);
             try {
                 let response = await axios.delete("/api/users/upload/" + shorty);
                 this.getUser();
@@ -157,6 +177,20 @@ var app = new Vue({
         },
         getShowLink(shorturl) {
             return window.location.hostname + '/' + shorturl;
+        },
+        selected(item) {
+            this.oldlink = item.shortcut;
+            this.shortcut = item.shortcut;
+            this.link = item.link;
+            this.buttonLabel = "Update";
+            this.update = true;
+        },
+        cancel() {
+            this.shortcut = '';
+            this.link = '';
+            this.buttonLabel = "Create";
+            this.update = false;
+            this.oldlink = '';
         },
     }
 });

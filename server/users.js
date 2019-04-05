@@ -255,6 +255,46 @@ router.delete('/upload/:id', auth.verifyToken, async (req, res) => {
     }
 });
 
+//edit lookup
+router.put('/upload/:id', auth.verifyToken, async (req, res) => {
+
+  let id = req.params.id;
+  try {
+    let lookup = await Lookup.findOne({
+      _id: id
+    });
+
+    await Lookup.deleteOne({
+      _id: id
+    });
+
+    const lookup1 = new Lookup({
+      _id: req.body.shortcut,
+      link: req.body.link,
+      loggedin: true,
+      timestamp: Date.now(),
+    });
+
+    const user = await User.findOne({
+        _id: req.user_id
+    });
+
+    user.removeShortcut(id);
+    user.addShortcut({
+            shortcut: lookup1._id,
+            link: lookup1.link
+    });
+
+    await lookup1.save();
+    await user.save();
+    res.send(lookup1);
+
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
 // want to make sure all methods are attached before we atach to model.
 const User = mongoose.model('User', userSchema);
 const Lookup = mongoose.model('Lookup', linkSchema);

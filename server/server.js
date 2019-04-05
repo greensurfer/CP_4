@@ -46,36 +46,6 @@ app.post('/upload', async (req, res) => {
   }
 });
 
-//edit lookup
-app.put('/upload/:id', auth.verifyToken, async (req, res) => {
-  let id = req.params.id;
-  try {
-    let lookup = await Lookup.findOne({
-      _id: id
-    });
-
-    console.log(lookup);
-
-    await Lookup.deleteOne({
-      _id: id
-    });
-
-    const lookup1 = new Lookup({
-      _id: req.body.id,
-      link: req.body.link,
-    });
-
-    console.log(lookup1);
-
-    await lookup1.save();
-    res.send(lookup1);
-
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
 const users = require("./users.js");
 app.use("/api/users", users.router);
 
