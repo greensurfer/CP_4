@@ -14,6 +14,13 @@ const userSchema = new mongoose.Schema({
     shortcuts: [],
 });
 
+const linkSchema = new mongoose.Schema({
+    _id: String,
+    link: String,
+    loggedin: Boolean,
+    timestamp: Number,
+});
+
 /*
  * Hook the "save" function in mongose.
  */
@@ -70,8 +77,8 @@ userSchema.methods.addShortcut = function(shortcut) {
     this.shortcuts.push(shortcut);
 }
 
-userSchema.methods.removeShortcut = function(shortcut) {
-    this.shortcuts = this.shortcuts.filter(t => t != shortcut);
+userSchema.methods.removeShortcut = function(shorty) {
+    this.shortcuts = this.shortcuts.filter(t => t.shortcut != shorty);
 }
 
 async function login(user, res) {
@@ -110,7 +117,7 @@ router.post('/', async (req, res) => {
 
         // create new user
         const user = new User({
-            email:    req.body.email,
+            email: req.body.email,
             username: req.body.username,
             password: req.body.password
         });
@@ -125,63 +132,134 @@ router.post('/', async (req, res) => {
 
 // Logout
 router.delete("/", auth.verifyToken, async (req, res) => {
-  // look up user account
-  const user = await User.findOne({
-    _id: req.user_id
-  });
-  if (!user)
-    return res.clearCookie('token').status(403).send({
-      error: "must login"
+    // look up user account
+    const user = await User.findOne({
+        _id: req.user_id
     });
+    if (!user)
+        return res.clearCookie('token').status(403).send({
+            error: "must login"
+        });
 
-  user.removeToken(req.token);
-  await user.save();
-  res.clearCookie('token');
-  res.sendStatus(200);
+    user.removeToken(req.token);
+    await user.save();
+    res.clearCookie('token');
+    res.sendStatus(200);
 });
 
 // Get current user if logged in.
 router.get('/', auth.verifyToken, async (req, res) => {
-  // look up user account
-  const user = await User.findOne({
-    _id: req.user_id
-  });
-  if (!user)
-    return res.status(403).send({
-      error: "must login"
+    // look up user account
+    const user = await User.findOne({
+        _id: req.user_id
     });
+    if (!user)
+        return res.status(403).send({
+            error: "must login"
+        });
 
-  return res.send(user);
+    return res.send(user);
 });
 
 // login
 router.post('/login', async (req, res) => {
-  if (!req.body.username || !req.body.password)
-    return res.sendStatus(400);
+    if (!req.body.username || !req.body.password)
+        return res.sendStatus(400);
 
-  try {
-    //  lookup user record
-    const existingUser = await User.findOne({
-      username: req.body.username
+    try {
+        //  lookup user record
+        const existingUser = await User.findOne({
+            username: req.body.username
+        });
+        if (!existingUser)
+            return res.status(403).send({
+                message: "username or password is wrong"
+            });
+
+        // check password
+        if (!await existingUser.comparePassword(req.body.password))
+            return res.status(403).send({
+                message: "username or password is wrong"
+            });
+
+        login(existingUser, res);
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(500);
+    }
+});
+
+// Uploading while logged in.
+router.post('/upload', auth.verifyToken, async (req, res) => {
+
+    lookup = new Lookup({
+        _id: req.body.shortcut,
+        link: req.body.link,
+        loggedin: true,
+        timestamp: Date.now(),
     });
-    if (!existingUser)
-      return res.status(403).send({
-        message: "username or password is wrong"
-      });
 
-    // check password
-    if (!await existingUser.comparePassword(req.body.password))
-      return res.status(403).send({
-        message: "username or password is wrong"
-      });
+    var http = "http://";
+    var https = "https://";
+    lookup.link = lookup.link.replace(http, '');
+    lookup.link = lookup.link.replace(https, '');
 
-    login(existingUser, res);
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(500);
-  }
+    const user = await User.findOne({
+        _id: req.user_id
+    });
+
+    if (!user)
+        return res.status(403).send({
+            error: "must login"
+        });
+
+    user.addShortcut({
+        shortcut: lookup._id,
+        link: lookup.link
+    });
+
+    try {
+        await lookup.save();
+        await user.save();
+        res.send(lookup);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
+
+// Delete shortcut.
+router.delete('/upload/:id', auth.verifyToken, async (req, res) => {
+
+    let id = req.params.id;
+    let lookup = await Lookup.findOne({
+        _id: id
+    });
+
+    await Lookup.deleteOne({
+        _id: id
+    });
+
+    const user = await User.findOne({
+        _id: req.user_id
+    });
+
+    user.removeShortcut(lookup._id);
+
+    try {
+        await user.save();
+        res.send(user);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
 });
 
 // want to make sure all methods are attached before we atach to model.
 const User = mongoose.model('User', userSchema);
-module.exports = router;
+const Lookup = mongoose.model('Lookup', linkSchema);
+
+module.exports = {
+    router: router,
+    Lookup: Lookup,
+}

@@ -39,6 +39,22 @@ const verifyToken = (req, res, next) => {
   }
 }
 
+const isLoggedIn = (req, res, next) => {
+  const token = req.cookies["token"];
+  if (!token) return false;
+  try {
+    const decoded = jwt.verify(token, secret);
+    // save user id
+    req.user_id = decoded.id;
+    req.token = token;
+    return true;
+
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
 const removeOldTokens = (tokens) => {
   return tokens.filter(token => {
     try {
@@ -54,4 +70,5 @@ module.exports = {
   generateToken: generateToken,
   verifyToken: verifyToken,
   removeOldTokens: removeOldTokens,
+  isLoggedIn: isLoggedIn,
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const auth = require("./auth.js");
 
 // Express...
 const app = express();
@@ -19,22 +20,13 @@ mongoose.connect('mongodb://localhost:27017/CP_4', {
   useNewUrlParser: true
 });
 
-const linkSchema = new mongoose.Schema({
-  _id: String,
-  link: String,
-});
-
-linkSchema.virtual('shortcut').get(function() {
-  return this._id;
-});
-
-const Lookup = mongoose.model('Lookup', linkSchema);
-
-// Saves a relation between a shortend url and full url.
+// Not logged in add shortcut.
 app.post('/upload', async (req, res) => {
   const lookup = new Lookup({
     _id: req.body.shortcut,
     link: req.body.link,
+    loggedin: false,
+    timestamp: Date.now(),
   });
 
   // TODO: regix? (low priority)
@@ -54,18 +46,8 @@ app.post('/upload', async (req, res) => {
   }
 });
 
-app.get('/upload', async (req, res) => {
-	  try {
-		      let lookups = await Lookup.find();
-		      res.send(lookups);
-		    } catch (error) {
-			        console.log(error);
-			        res.sendStatus(500);
-			      }
-});
-
 //edit lookup
-app.put('/upload/:id', async (req, res) => {
+app.put('/upload/:id', auth.verifyToken, async (req, res) => {
   let id = req.params.id;
   try {
     let lookup = await Lookup.findOne({
@@ -94,23 +76,10 @@ app.put('/upload/:id', async (req, res) => {
   }
 });
 
-//deletes specific lookups
-app.delete('/upload/:id', async (req, res) => {
-  let id = req.params.id;
-  try {
-    await Lookup.deleteOne({
-      _id: id
-    });
-    res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-
-});
-
 const users = require("./users.js");
-app.use("/api/users", users);
+app.use("/api/users", users.router);
+
+const Lookup = users.Lookup;
 
 // Fowards tiny url to actual url.
 app.get('/:shortcut', async (req, res) => {

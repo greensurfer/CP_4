@@ -6,8 +6,6 @@ var app = new Vue({
         showForm: false,
         registerationForm: false,
         showSignoutForm: false,
-        created: '',
-        showLink: '',
         email: '',
         username: '',
         password: '',
@@ -36,12 +34,6 @@ var app = new Vue({
         },
         hasConfirmPassword() {
             return this.confirmPassword.trim().length !== 0;
-        },
-        shortcutCreated() {
-            return this.created.trim().length !== 0;
-        },
-        getHost() {
-            return window.location.hostname + '/';
         },
     },
     methods: {
@@ -100,31 +92,41 @@ var app = new Vue({
             try {
                 let response = await axios.get("/api/users");
                 this.user = response.data;
+                this.userShortcuts = this.user.shortcuts.reverse();
+                console.log(this.userShortcuts);
             } catch (error) {
                 // Not logged in. That's OK!
             }
         },
         async addShortcut() {
             try {
-                let response = await axios.post("/upload", {
-                    shortcut: this.shortcut,
-                    link: this.link,
-                });
-
-                this.showLink = window.location.hostname + '/' + this.shortcut;
-                this.created = 'http://' + this.showLink;
+                if (this.user === null) {
+                    // Not logged in API.
+                    let response = await axios.post("/upload", {
+                        shortcut: this.shortcut,
+                        link: this.link,
+                    });
+                } else {
+                    // Logged in API.
+                    let response = await axios.post("/api/users/upload", {
+                        shortcut: this.shortcut,
+                        link: this.link,
+                    });
+                }
 
                 this.shortcut = "";
                 this.link = "";
 
+                this.getUser();
             } catch (error) {
                 console.log(error);
                 alert("Error creating shortcut!");
             }
         },
-        async deleteShortcut(shortcut) {
+        async deleteShortcut(shorty) {
+            console.log(shorty);
             try {
-                let response = axios.delete("/upload/" + shortcut);
+                let response = await axios.delete("/api/users/upload/" + shorty);
                 this.getUser();
             } catch (error) {
                 console.log(error);
@@ -149,6 +151,12 @@ var app = new Vue({
         },
         showSignout() {
             this.showSignoutForm = true;
-        }
+        },
+        getLink(shorturl) {
+            return 'http://' + window.location.hostname + '/' + shorturl;
+        },
+        getShowLink(shorturl) {
+            return window.location.hostname + '/' + shorturl;
+        },
     }
 });

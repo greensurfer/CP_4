@@ -169,6 +169,11 @@ html {
     padding-left: 10px;
 }
 
+#item_box a {
+    padding-left: 10px;
+    font-style: italic;
+}
+
 #item_box button {
     float: right;
     background-color: Transparent;
