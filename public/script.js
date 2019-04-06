@@ -73,6 +73,7 @@ var app = new Vue({
                     password: this.password
                 });
                 this.user = response.data;
+                this.userShortcuts = this.user.shortcuts.reverse();
                 // close the dialog
                 this.close();
             } catch (error) {
@@ -99,6 +100,7 @@ var app = new Vue({
             try {
                 let response = await axios.delete("/api/users");
                 this.user = null;
+                this.userShortcuts = null;
             } catch (error) {
                 // don't worry about it
             }
