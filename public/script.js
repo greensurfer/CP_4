@@ -101,6 +101,7 @@ var app = new Vue({
                 let response = await axios.delete("/api/users");
                 this.user = null;
                 this.userShortcuts = null;
+                this.cancel();
             } catch (error) {
                 // don't worry about it
             }
